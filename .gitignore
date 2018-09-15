@@ -1,4 +1,6 @@
 *.rbc
+.DS_Store
+lib/.DS_Store
 capybara-*.html
 .rspec
 /log
