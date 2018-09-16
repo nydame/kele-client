@@ -1,9 +1,21 @@
 require 'httparty'
+require 'pp'
 
 class Kele
-  def initialize(email, token)
+  include HTTParty
+
+  base_uri 'https://www.bloc.io/api/v1'
+  format :json
+
+  def initialize(email, password)
     @email = email
-    @token = token
-    # use httparty to make a call to the Bloc API
+    @password = password
+    @auth_token = self.class.post('/sessions', {
+      body: {
+        email: @email,
+        password: @password
+      }
+      })
   end
+
 end
