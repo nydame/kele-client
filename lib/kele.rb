@@ -50,4 +50,17 @@ class Kele
     end
   end
 
+  def get_mentor_availability(mentor_id)
+    begin
+      values = '{"id": 0}' # not needed???
+      auth_header = { authorization: @response['auth_token'] }
+      mentor_availability_response = self.class.get("/mentors/#{mentor_id}/student_availability", headers: auth_header)
+      mentor_availability_response.select {|timeslot| timeslot['booked'] == nil}
+    rescue HTTParty::Error
+      puts "Requested data could not be sent: #{mentor_availability_response.message}."
+    rescue => e
+      puts "Something went wrong: #{e.message}."
+    end
+  end
+
 end
