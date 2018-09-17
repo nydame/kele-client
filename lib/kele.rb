@@ -1,4 +1,5 @@
 require 'httparty'
+require 'oj'
 require 'pp'
 
 class Kele
@@ -7,6 +8,8 @@ class Kele
   include HTTParty
   base_uri 'https://www.bloc.io/api/v1'
   format :json
+
+  include Oj
 
   def initialize(email, password)
     @options = {
@@ -39,6 +42,7 @@ class Kele
       auth_header = { authorization: @response['auth_token'] }
       current_user_response = self.class.get('/users/me', headers: auth_header)
       current_user_json = current_user_response.body
+      current_user_hash = Oj.load(current_user_json)
     rescue HTTParty::Error
       puts "Requested data could not be sent: #{current_user_response.message}."
     rescue => e
