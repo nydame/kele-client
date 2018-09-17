@@ -38,6 +38,7 @@ class Kele
     begin
       auth_header = { authorization: @response['auth_token'] }
       current_user_response = self.class.get('/users/me', headers: auth_header)
+      current_user_json = current_user_response.body
     rescue HTTParty::Error
       puts "Requested data could not be sent: #{current_user_response.message}."
     rescue => e
