@@ -3,7 +3,6 @@ module Roadmap
 
   def get_roadmap(chain_id)
     begin
-      auth_header = { authorization: @response['auth_token'] }
       roadmap_response = self.class.get("/roadmaps/#{chain_id}", headers: auth_header)
       roadmap_json = roadmap_response.body
       roadmap_hash = Oj.load(roadmap_json)

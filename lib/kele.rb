@@ -2,6 +2,7 @@ require 'httparty'
 require 'oj'
 require 'pp'
 require './lib/roadmap'
+require './lib/messages'
 
 class Kele
   attr_accessor :options, :response
@@ -13,6 +14,7 @@ class Kele
   include Oj
 
   include Roadmap
+  include Messages
 
   def initialize(email, password)
     @options = {
@@ -42,7 +44,6 @@ class Kele
 
   def get_me
     begin
-      auth_header = { authorization: @response['auth_token'] }
       current_user_response = self.class.get('/users/me', headers: auth_header)
       current_user_json = current_user_response.body
       current_user_hash = Oj.load(current_user_json)
@@ -55,8 +56,6 @@ class Kele
 
   def get_mentor_availability(mentor_id)
     begin
-      values = '{"id": 0}' # not needed???
-      auth_header = { authorization: @response['auth_token'] }
       mentor_availability_response = self.class.get("/mentors/#{mentor_id}/student_availability", headers: auth_header)
       mentor_availability_response.select {|timeslot| timeslot['booked'] == nil}
     rescue HTTParty::Error
@@ -64,6 +63,12 @@ class Kele
     rescue => e
       puts "Something went wrong: #{e.message}."
     end
+  end
+
+  private
+
+  def auth_header
+    {authorization: @response['auth_token']}
   end
 
 end
