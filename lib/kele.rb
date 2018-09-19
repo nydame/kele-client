@@ -1,6 +1,7 @@
 require 'httparty'
 require 'oj'
 require 'pp'
+require './lib/roadmap'
 
 class Kele
   attr_accessor :options, :response
@@ -10,6 +11,8 @@ class Kele
   format :json
 
   include Oj
+
+  include Roadmap
 
   def initialize(email, password)
     @options = {
