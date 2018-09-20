@@ -18,8 +18,8 @@ module Messages
       body: {
         sender: @response['user']['email'],
         recipient_id: recipient_id,
-        subject: subject,
-        stripped_text: text
+        subject: Sanitize.fragment(subject, Sanitize::Config::RESTRICTED),
+        stripped_text: Sanitize.fragment(text, Sanitize::Config::RESTRICTED),
       },
     }
     begin
