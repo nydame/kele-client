@@ -12,7 +12,7 @@ module Messages
     end
   end
 
-  def create_message(recipient_id, subject, text)
+  def create_message(recipient_id, subject, text, token=nil)
     options = {
       headers: auth_header,
       body: {
@@ -22,6 +22,9 @@ module Messages
         stripped_text: Sanitize.fragment(text, Sanitize::Config::RESTRICTED),
       },
     }
+    if token != nil
+      options[:body][:token] = token
+    end
     begin
       new_message_response = self.class.post('/messages', options)
     rescue HTTParty::Error
